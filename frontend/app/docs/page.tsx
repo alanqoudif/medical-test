@@ -632,7 +632,7 @@ uint64 createdAt       // Creation timestamp`}
                           <li><code className="bg-slate-100 px-1 rounded">isPatient: boolean</code></li>
                           <li><code className="bg-slate-100 px-1 rounded">isLoading: boolean</code></li>
                           <li><code className="bg-slate-100 px-1 rounded">address: string | undefined</code></li>
-                          <li><code className="bg-slate-100 px-1 rounded">refetch: () => void</code></li>
+                          <li><code className="bg-slate-100 px-1 rounded">refetch: () =&gt; void</code></li>
                         </ul>
                       </div>
                     </div>
