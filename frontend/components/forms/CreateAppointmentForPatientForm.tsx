@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useBookAppointmentForPatient, useGetPatients } from "@/hooks/useHealthcare";
+import { useState, useEffect } from "react";
+import { useBookAppointmentForPatient, useGetPatients, useGetMyAppointmentsAsDoctor } from "@/hooks/useHealthcare";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import type { Patient } from "@/types";
@@ -13,6 +13,16 @@ export function CreateAppointmentForPatientForm() {
   const [reason, setReason] = useState("");
   const { patients, isLoading: patientsLoading } = useGetPatients();
   const { bookForPatient, isPending, isConfirming, isConfirmed } = useBookAppointmentForPatient();
+  const { refetch: refetchAppointments } = useGetMyAppointmentsAsDoctor();
+
+  useEffect(() => {
+    if (isConfirmed) {
+      // Refetch appointments after successful creation
+      setTimeout(() => {
+        refetchAppointments();
+      }, 1000);
+    }
+  }, [isConfirmed, refetchAppointments]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useGetPatients } from "@/hooks/useHealthcare";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { formatAddress } from "@/lib/utils";
 import Link from "next/link";
+import { ProfileModal } from "./ProfileModal";
 import type { Patient } from "@/types";
 
 interface PatientsListProps {
@@ -13,6 +15,7 @@ interface PatientsListProps {
 
 export function PatientsList({ limit }: PatientsListProps) {
   const { patients, isLoading } = useGetPatients();
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   const displayPatients = limit ? patients.slice(0, limit) : patients;
 
@@ -51,7 +54,8 @@ export function PatientsList({ limit }: PatientsListProps) {
           {displayPatients.map((patient: Patient) => (
             <div
               key={patient.addr}
-              className="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+              onClick={() => setSelectedPatient(patient)}
+              className="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
             >
               <Avatar name={patient.name} size="md" />
               <div className="flex-1">
@@ -62,6 +66,14 @@ export function PatientsList({ limit }: PatientsListProps) {
           ))}
         </div>
       </div>
+      {selectedPatient && (
+        <ProfileModal
+          type="patient"
+          profile={selectedPatient}
+          isOpen={!!selectedPatient}
+          onClose={() => setSelectedPatient(null)}
+        />
+      )}
     </Card>
   );
 }

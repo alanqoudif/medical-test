@@ -70,6 +70,11 @@ export function AppointmentsTable({ showNotes = false }: AppointmentsTableProps)
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
+                {showNotes && (
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Notes
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -123,20 +128,24 @@ function AppointmentRow({
             {appointment.status}
           </span>
         </td>
-        {showNotes && note?.exists && (
+        {showNotes && (
           <td className="px-4 py-4 whitespace-nowrap text-sm">
-            <button
-              onClick={() => setShowNoteDetails(!showNoteDetails)}
-              className="text-blue-600 hover:text-blue-800"
-            >
-              {showNoteDetails ? "Hide Note" : "View Note"}
-            </button>
+            {note?.exists ? (
+              <button
+                onClick={() => setShowNoteDetails(!showNoteDetails)}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                {showNoteDetails ? "Hide Note" : "View Note"}
+              </button>
+            ) : (
+              <span className="text-gray-400 text-xs">No notes yet</span>
+            )}
           </td>
         )}
       </tr>
       {showNoteDetails && note?.exists && (
         <tr>
-          <td colSpan={5} className="px-4 py-4 bg-gray-50">
+          <td colSpan={showNotes ? 6 : 5} className="px-4 py-4 bg-gray-50">
             <div className="space-y-2">
               <div>
                 <span className="font-semibold text-sm">Diagnosis: </span>

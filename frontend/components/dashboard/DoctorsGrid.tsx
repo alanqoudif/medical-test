@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useGetDoctors } from "@/hooks/useHealthcare";
 import { Avatar } from "@/components/ui/Avatar";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { formatAddress } from "@/lib/utils";
 import Link from "next/link";
+import { ProfileModal } from "./ProfileModal";
 import type { Doctor } from "@/types";
 
 interface DoctorsGridProps {
@@ -13,6 +15,7 @@ interface DoctorsGridProps {
 
 export function DoctorsGrid({ limit }: DoctorsGridProps) {
   const { doctors, isLoading } = useGetDoctors();
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
 
   const displayDoctors = limit ? doctors.slice(0, limit) : doctors;
 
@@ -52,6 +55,7 @@ export function DoctorsGrid({ limit }: DoctorsGridProps) {
             {displayDoctors.map((doctor: Doctor, index: number) => (
               <div
                 key={doctor.addr}
+                onClick={() => setSelectedDoctor(doctor)}
                 className="flex-shrink-0 w-48 p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition-all cursor-pointer"
               >
                 <div className="relative mb-4">
@@ -67,6 +71,14 @@ export function DoctorsGrid({ limit }: DoctorsGridProps) {
           </div>
         </div>
       </div>
+      {selectedDoctor && (
+        <ProfileModal
+          type="doctor"
+          profile={selectedDoctor}
+          isOpen={!!selectedDoctor}
+          onClose={() => setSelectedDoctor(null)}
+        />
+      )}
     </Card>
   );
 }
