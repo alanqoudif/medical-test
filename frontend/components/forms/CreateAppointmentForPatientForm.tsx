@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import type { Patient } from "@/types";
 
-export function CreateAppointmentForPatientForm() {
+interface CreateAppointmentForPatientFormProps {
+  onAppointmentCreated?: () => void;
+}
+
+export function CreateAppointmentForPatientForm({ onAppointmentCreated }: CreateAppointmentForPatientFormProps = {}) {
   const [selectedPatient, setSelectedPatient] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -20,9 +24,10 @@ export function CreateAppointmentForPatientForm() {
       // Refetch appointments after successful creation
       setTimeout(() => {
         refetchAppointments();
-      }, 1000);
+        onAppointmentCreated?.();
+      }, 2000);
     }
-  }, [isConfirmed, refetchAppointments]);
+  }, [isConfirmed, refetchAppointments, onAppointmentCreated]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -35,7 +35,7 @@ export default function DashboardPage() {
   const { stats, isLoading: statsLoading } = useGetStats();
   const { appointments: patientAppointments, isLoading: patientAppointmentsLoading } =
     useGetMyAppointmentsAsPatient();
-  const { appointments: doctorAppointments, isLoading: doctorAppointmentsLoading } =
+  const { appointments: doctorAppointments, isLoading: doctorAppointmentsLoading, refetch: refetchDoctorAppointments } =
     useGetMyAppointmentsAsDoctor();
   const { appointments: allAppointments } = useGetAllAppointments();
   const { doctors } = useGetDoctors();
@@ -179,7 +179,12 @@ export default function DashboardPage() {
         {role === "doctor" && (
           <div className="space-y-8 mb-8">
             {/* Create Appointment for Patient */}
-            <CreateAppointmentForPatientForm />
+            <CreateAppointmentForPatientForm 
+              onAppointmentCreated={() => {
+                // Refetch appointments in dashboard
+                refetchDoctorAppointments();
+              }}
+            />
 
             {/* My Appointments */}
             <Card>
