@@ -4,6 +4,10 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  
+# If base directory is frontend, uncomment this:
+# [context.production.environment]
+#   NODE_VERSION = "18"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -12,8 +16,3 @@
   # NEXT_PUBLIC_CONTRACT_ADDRESS=0x08aE9733Abcf0EA3833Cf7AB3aac2c1b87B67E2d
   # NEXT_PUBLIC_CHAIN_ID=11155111
   # NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=7000939486454648ad2b070db3276e33
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200

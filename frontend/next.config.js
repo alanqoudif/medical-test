@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  // Remove 'output: standalone' for Netlify deployment
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
