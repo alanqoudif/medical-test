@@ -12,10 +12,11 @@ const nextConfig = {
         '@react-native-async-storage/async-storage': false,
         'pino-pretty': false,
       };
-      config.externals = {
-        ...config.externals,
-        '@react-native-async-storage/async-storage': 'commonjs @react-native-async-storage/async-storage',
-      };
+      // Suppress warnings for optional peer dependencies
+      config.ignoreWarnings = [
+        { module: /node_modules\/@metamask\/sdk/ },
+        { module: /node_modules\/pino/ },
+      ];
     }
     return config;
   },
