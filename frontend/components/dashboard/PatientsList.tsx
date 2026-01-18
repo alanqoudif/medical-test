@@ -2,8 +2,9 @@
 
 import { useGetPatients } from "@/hooks/useHealthcare";
 import { Avatar } from "@/components/ui/Avatar";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Card, CardTitle } from "@/components/ui/Card";
 import { formatAddress } from "@/lib/utils";
+import Link from "next/link";
 import type { Patient } from "@/types";
 
 interface PatientsListProps {
@@ -17,54 +18,50 @@ export function PatientsList({ limit }: PatientsListProps) {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Patients</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="bg-white border border-gray-200 shadow-md">
+        <div className="p-6">
+          <CardTitle className="mb-4">Recent Patient</CardTitle>
           <p className="text-gray-600">Loading patients...</p>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   if (displayPatients.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Patients</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="bg-white border border-gray-200 shadow-md">
+        <div className="p-6">
+          <CardTitle className="mb-4">Recent Patient</CardTitle>
           <p className="text-gray-600">No patients registered yet.</p>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Patients</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
+    <Card className="bg-white border border-gray-200 shadow-md">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <CardTitle>Recent Patient</CardTitle>
+          <Link href="/patients" className="text-green-600 hover:text-green-700 text-sm font-medium">
+            View more &gt;&gt;
+          </Link>
+        </div>
+        <div className="space-y-4">
           {displayPatients.map((patient: Patient) => (
             <div
               key={patient.addr}
-              className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+              className="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors"
             >
               <Avatar name={patient.name} size="md" />
               <div className="flex-1">
                 <h4 className="font-semibold text-gray-900">{patient.name}</h4>
-                <p className="text-sm text-gray-600">Age: {patient.age}</p>
+                <p className="text-sm text-gray-500">Age: {patient.age}</p>
               </div>
-              <span className="text-xs text-gray-500 font-mono">
-                {formatAddress(patient.addr)}
-              </span>
             </div>
           ))}
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

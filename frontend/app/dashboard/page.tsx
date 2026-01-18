@@ -93,35 +93,42 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">Welcome to Healthcare DApp!</h1>
+          <p className="text-gray-500">Hospital Decentralized Medical Center</p>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
-            title="Total Doctors"
-            value={stats?.totalDoctors?.toString() || "0"}
-            gradient="from-blue-500 to-cyan-600"
-            tag="DOCTORS"
-          />
-          <StatCard
-            title="Total Patients"
+            title="Total Patient"
             value={stats?.totalPatients?.toString() || "0"}
-            gradient="from-green-500 to-teal-600"
-            tag="PATIENTS"
+            gradient="from-red-500 to-red-600"
+            percentage="+4%"
           />
           <StatCard
-            title="Total Appointments"
+            title="Doctor"
+            value={stats?.totalDoctors?.toString() || "0"}
+            gradient="from-green-500 to-green-600"
+            percentage="+.4%"
+          />
+          <StatCard
+            title="Appointment"
             value={stats?.totalAppointments?.toString() || "0"}
-            gradient="from-purple-500 to-pink-600"
-            tag="APPOINTMENTS"
+            gradient="from-blue-400 to-blue-500"
+            percentage="+.2%"
           />
           <StatCard
-            title="My Appointments"
-            value={appointments.length.toString()}
-            gradient="from-orange-500 to-red-600"
+            title="Notifications"
+            value={allAppointments.length.toString()}
+            gradient="from-purple-500 to-purple-600"
+            percentage="+.5%"
           />
         </div>
 
-        {/* Balance Card */}
+        {/* Balance Card - Full Width */}
         <div className="mb-8">
           <BalanceCard />
         </div>
@@ -354,16 +361,12 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* General sections */}
+        {/* General sections - Two columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <DoctorsGrid limit={6} />
           <PatientsList limit={5} />
         </div>
 
-        {/* Recent Appointments */}
-        <div className="mb-8">
-          <AppointmentsTable showNotes={role === "patient"} />
-        </div>
 
         {/* Note Modal */}
         {selectedAppointmentId && (

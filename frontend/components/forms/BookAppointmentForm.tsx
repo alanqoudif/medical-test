@@ -79,23 +79,32 @@ export function BookAppointmentForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="doctor" className="block text-sm font-medium text-gray-700 mb-1">
-              Select Doctor
+            <label htmlFor="doctor" className="block text-sm font-medium text-gray-700 mb-2">
+              Select Doctor from Registered Doctors
             </label>
-            <select
-              id="doctor"
-              value={selectedDoctor}
-              onChange={(e) => setSelectedDoctor(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="">Choose a doctor...</option>
-              {doctors.map((doctor: Doctor) => (
-                <option key={doctor.addr} value={doctor.addr}>
-                  {doctor.name} - {doctor.specialty}
-                </option>
-              ))}
-            </select>
+            {doctors.length === 0 ? (
+              <p className="text-sm text-gray-500 mb-2">No doctors registered yet. Please check back later.</p>
+            ) : (
+              <select
+                id="doctor"
+                value={selectedDoctor}
+                onChange={(e) => setSelectedDoctor(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-base"
+                required
+              >
+                <option value="">Choose a doctor from the platform...</option>
+                {doctors.map((doctor: Doctor) => (
+                  <option key={doctor.addr} value={doctor.addr}>
+                    {doctor.name} - {doctor.specialty} (Registered Doctor)
+                  </option>
+                ))}
+              </select>
+            )}
+            {doctors.length > 0 && (
+              <p className="mt-2 text-xs text-gray-500">
+                {doctors.length} doctor{doctors.length !== 1 ? "s" : ""} available on the platform
+              </p>
+            )}
           </div>
 
           <div>

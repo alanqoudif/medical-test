@@ -2,8 +2,9 @@
 
 import { useGetDoctors } from "@/hooks/useHealthcare";
 import { Avatar } from "@/components/ui/Avatar";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Card, CardTitle } from "@/components/ui/Card";
 import { formatAddress } from "@/lib/utils";
+import Link from "next/link";
 import type { Doctor } from "@/types";
 
 interface DoctorsGridProps {
@@ -17,59 +18,55 @@ export function DoctorsGrid({ limit }: DoctorsGridProps) {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Rated Doctors</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="bg-white border border-gray-200 shadow-md">
+        <div className="p-6">
+          <CardTitle className="mb-4">Top Rated Doctors</CardTitle>
           <p className="text-gray-600">Loading doctors...</p>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   if (displayDoctors.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Rated Doctors</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="bg-white border border-gray-200 shadow-md">
+        <div className="p-6">
+          <CardTitle className="mb-4">Top Rated Doctors</CardTitle>
           <p className="text-gray-600">No doctors registered yet.</p>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Top Rated Doctors</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {displayDoctors.map((doctor: Doctor, index: number) => (
-            <div
-              key={doctor.addr}
-              className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center space-x-3 mb-3">
-                <Avatar name={doctor.name} size="md" />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">{doctor.name}</h4>
-                  <p className="text-sm text-gray-600">{doctor.specialty}</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span className="font-mono">#{formatAddress(doctor.addr)}</span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                  D-{String(index + 1).padStart(3, "0")}
-                </span>
-              </div>
-            </div>
-          ))}
+    <Card className="bg-white border border-gray-200 shadow-md">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <CardTitle>Top Rated Doctors</CardTitle>
+          <Link href="/doctors" className="text-green-600 hover:text-green-700 text-sm font-medium">
+            View more &gt;&gt;
+          </Link>
         </div>
-      </CardContent>
+        <div className="overflow-x-auto">
+          <div className="flex space-x-4 pb-4" style={{ minWidth: "max-content" }}>
+            {displayDoctors.map((doctor: Doctor, index: number) => (
+              <div
+                key={doctor.addr}
+                className="flex-shrink-0 w-48 p-4 bg-white border border-gray-200 rounded-xl hover:shadow-lg transition-all cursor-pointer"
+              >
+                <div className="relative mb-4">
+                  <Avatar name={doctor.name} size="lg" />
+                  <div className="absolute bottom-0 right-0 bg-green-700 text-white text-xs px-2 py-1 rounded font-semibold">
+                    #{`D-${String(index + 1).padStart(3, "0")}`}
+                  </div>
+                </div>
+                <h4 className="font-bold text-gray-900 mb-1 text-sm">{doctor.name}</h4>
+                <p className="text-green-600 text-sm font-medium">{doctor.specialty}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </Card>
   );
 }

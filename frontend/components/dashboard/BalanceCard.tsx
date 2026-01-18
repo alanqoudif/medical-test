@@ -2,7 +2,7 @@
 
 import { useAccount, useBalance } from "wagmi";
 import { formatEther } from "viem";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 
 export function BalanceCard() {
   const { address } = useAccount();
@@ -15,19 +15,20 @@ export function BalanceCard() {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-0">
-      <CardHeader>
-        <CardTitle className="text-white">Wallet Balance</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card className="bg-white border border-gray-200 shadow-md">
+      <div className="p-6">
+        <h3 className="text-gray-900 font-semibold mb-3">Balance</h3>
         {isLoading ? (
-          <p className="text-2xl font-bold">Loading...</p>
+          <p className="text-3xl font-bold text-blue-600">Loading...</p>
         ) : (
-          <p className="text-3xl font-bold">
-            {balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000"} ETH
-          </p>
+          <div className="flex items-baseline space-x-2">
+            <p className="text-3xl font-bold text-blue-600">
+              {balance ? parseFloat(formatEther(balance.value)).toFixed(2) : "0.00"}
+            </p>
+            <span className="text-gray-900 text-xl font-semibold">ETH</span>
+          </div>
         )}
-      </CardContent>
+      </div>
     </Card>
   );
 }
