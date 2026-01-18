@@ -94,7 +94,7 @@ export function ProfileModal({ type, profile, isOpen, onClose }: ProfileModalPro
 
         <div className="space-y-4">
           <div className="flex flex-col items-center mb-6">
-            <Avatar name={profile.name} size="xl" />
+            <Avatar name={profile.name} size="lg" />
             <h3 className="text-xl font-bold text-gray-900 mt-4">{profile.name}</h3>
             {doctor && (
               <p className="text-green-600 font-medium mt-1">{doctor.specialty}</p>
