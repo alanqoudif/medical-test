@@ -117,14 +117,16 @@ export function ProfileModal({ type, profile, isOpen, onClose }: ProfileModalPro
               </div>
             )}
 
-            <div>
-              <p className="text-sm font-medium text-gray-500">Status</p>
-              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-                profile.approved ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
-              }`}>
-                {profile.approved ? "Approved" : "Pending Approval"}
-              </span>
-            </div>
+            {doctor && (
+              <div>
+                <p className="text-sm font-medium text-gray-500">Status</p>
+                <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
+                  doctor.approved ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                }`}>
+                  {doctor.approved ? "Approved" : "Pending Approval"}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
