@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { formatDate } from "@/lib/utils";
+import { getRoleLabel, getRoleBadgeStyles, getRoleBadgeIcon } from "@/lib/roleUtils";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -96,7 +97,14 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Welcome to Healthcare DApp!</h1>
+          <div className="flex items-center space-x-3 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900">Welcome to Healthcare DApp!</h1>
+            {role !== "none" && (
+              <span className={`px-3 py-1 text-sm font-semibold rounded-full border ${getRoleBadgeStyles(role)}`}>
+                {getRoleBadgeIcon(role)} {getRoleLabel(role)}
+              </span>
+            )}
+          </div>
           <p className="text-gray-500">Hospital Decentralized Medical Center</p>
         </div>
 

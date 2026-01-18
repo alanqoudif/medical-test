@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import Link from "next/link";
 import { useRole } from "@/hooks/useRole";
 import { useState } from "react";
+import { getRoleLabel, getRoleBadgeStyles, getRoleBadgeIcon } from "@/lib/roleUtils";
 
 export function Navbar() {
   const { address, isConnected } = useAccount();
@@ -64,11 +65,18 @@ export function Navbar() {
             {/* Profile / Connect Button */}
             <div className="flex items-center space-x-2">
               {isConnected && (
-                <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
-                  <span>Hello,</span>
-                  <span className="font-medium">
-                    {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "User"}
-                  </span>
+                <div className="hidden sm:flex items-center space-x-3">
+                  {role !== "none" && (
+                    <span className={`px-3 py-1 text-xs font-semibold rounded-full border ${getRoleBadgeStyles(role)}`}>
+                      {getRoleBadgeIcon(role)} {getRoleLabel(role)}
+                    </span>
+                  )}
+                  <div className="text-sm text-gray-600">
+                    <span>Hello,</span>
+                    <span className="font-medium ml-1">
+                      {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "User"}
+                    </span>
+                  </div>
                 </div>
               )}
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
