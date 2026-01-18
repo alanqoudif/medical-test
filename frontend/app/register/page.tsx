@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useAccount } from "wagmi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -11,7 +11,7 @@ import { useRole } from "@/hooks/useRole";
 import { Card } from "@/components/ui/Card";
 import { formatAddress } from "@/lib/utils";
 
-export default function RegisterPage() {
+function RegisterContent() {
   const searchParams = useSearchParams();
   const initialType = searchParams.get("type") as "doctor" | "patient" | null;
   const [activeTab, setActiveTab] = useState<"doctor" | "patient">(initialType || "doctor");
@@ -147,5 +147,17 @@ export default function RegisterPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    }>
+      <RegisterContent />
+    </Suspense>
   );
 }
