@@ -99,11 +99,9 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-2">
             <h1 className="text-3xl font-bold text-gray-900">Welcome to Healthcare DApp!</h1>
-            {role !== "none" && (
-              <span className={`px-3 py-1 text-sm font-semibold rounded-full border ${getRoleBadgeStyles(role)}`}>
-                {getRoleBadgeIcon(role)} {getRoleLabel(role)}
-              </span>
-            )}
+            <span className={`px-3 py-1 text-sm font-semibold rounded-full border ${getRoleBadgeStyles(role)}`}>
+              {getRoleBadgeIcon(role)} {getRoleLabel(role)}
+            </span>
           </div>
           <p className="text-gray-500">Hospital Decentralized Medical Center</p>
         </div>

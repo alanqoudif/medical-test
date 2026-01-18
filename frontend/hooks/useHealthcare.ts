@@ -203,7 +203,16 @@ export function useGetMyAppointmentsAsPatient() {
     },
   });
 
-  const appointments: Appointment[] = data ? Array.from(data as readonly any[]) as Appointment[] : [];
+  // Convert status enum from number/bigint to string
+  const appointments: Appointment[] = data 
+    ? (Array.from(data as readonly any[]) as any[]).map((appt: any) => {
+        const statusNum = typeof appt.status === 'bigint' ? Number(appt.status) : appt.status;
+        return {
+          ...appt,
+          status: statusNum === 0 ? "Booked" : statusNum === 1 ? "Completed" : "Cancelled",
+        };
+      }) as Appointment[]
+    : [];
 
   return {
     appointments,
@@ -224,7 +233,16 @@ export function useGetMyAppointmentsAsDoctor() {
     },
   });
 
-  const appointments: Appointment[] = data ? Array.from(data as readonly any[]) as Appointment[] : [];
+  // Convert status enum from number/bigint to string
+  const appointments: Appointment[] = data 
+    ? (Array.from(data as readonly any[]) as any[]).map((appt: any) => {
+        const statusNum = typeof appt.status === 'bigint' ? Number(appt.status) : appt.status;
+        return {
+          ...appt,
+          status: statusNum === 0 ? "Booked" : statusNum === 1 ? "Completed" : "Cancelled",
+        };
+      }) as Appointment[]
+    : [];
 
   return {
     appointments,
@@ -272,7 +290,16 @@ export function useGetAllAppointments() {
     functionName: "getAllAppointments",
   });
 
-  const appointments: Appointment[] = data ? Array.from(data as readonly any[]) as Appointment[] : [];
+  // Convert status enum from number/bigint to string
+  const appointments: Appointment[] = data 
+    ? (Array.from(data as readonly any[]) as any[]).map((appt: any) => {
+        const statusNum = typeof appt.status === 'bigint' ? Number(appt.status) : appt.status;
+        return {
+          ...appt,
+          status: statusNum === 0 ? "Booked" : statusNum === 1 ? "Completed" : "Cancelled",
+        };
+      }) as Appointment[]
+    : [];
 
   return {
     appointments,
