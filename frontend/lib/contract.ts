@@ -1,16 +1,20 @@
 // Contract ABI - This will be generated after compiling the contract
+// ABI (Application Binary Interface) defines how to interact with the smart contract
 // For now, we'll use a minimal ABI with the essential functions
 export const HEALTHCARE_ABI = [
+  // Array containing function definitions for the Healthcare contract
   {
+    // Function definition for registering a doctor
     inputs: [
-      { internalType: "string", name: "name", type: "string" },
-      { internalType: "string", name: "specialty", type: "string" },
-      { internalType: "string", name: "licenseId", type: "string" },
+      // List of input parameters for this function
+      { internalType: "string", name: "name", type: "string" }, // Doctor's name parameter
+      { internalType: "string", name: "specialty", type: "string" }, // Medical specialty parameter
+      { internalType: "string", name: "licenseId", type: "string" }, // License ID parameter
     ],
-    name: "registerDoctor",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    name: "registerDoctor", // Function name in the contract
+    outputs: [], // This function doesn't return any value
+    stateMutability: "nonpayable", // Function doesn't accept ether payments
+    type: "function", // This is a function type
   },
   {
     inputs: [
@@ -291,11 +295,18 @@ export const HEALTHCARE_ABI = [
 ] as const;
 
 export function getContractAddress(): `0x${string}` {
+  // Function to get the deployed smart contract address
+  // Returns a typed Ethereum address string
   const address = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+  // Get contract address from environment variables
   if (!address || address === "0x0000000000000000000000000000000000000000") {
+    // Check if address is missing or is the zero address
     // Return a dummy address for development - replace with actual deployed address
     console.warn("NEXT_PUBLIC_CONTRACT_ADDRESS not set. Using dummy address. Please deploy contract and set the address.");
+    // Log warning message to console
     return "0x0000000000000000000000000000000000000000" as `0x${string}`;
+    // Return zero address as fallback (typed as Ethereum address)
   }
   return address as `0x${string}`;
+  // Return the actual contract address (typed as Ethereum address)
 }
