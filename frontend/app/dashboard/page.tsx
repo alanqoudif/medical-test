@@ -153,17 +153,7 @@ export default function DashboardPage() {
                 <CardTitle>My Appointments</CardTitle>
               </CardHeader>
               <CardContent>
-                {role === "none" ? (
-                  <div className="text-center py-8">
-                    <p className="text-gray-600 mb-2">You need to register first.</p>
-                    <p className="text-sm text-gray-500 mb-4">
-                      Please register as a patient or doctor to view your appointments.
-                    </p>
-                    <Link href="/register">
-                      <Button variant="outline">Go to Registration</Button>
-                    </Link>
-                  </div>
-                ) : appointmentsLoading ? (
+                {appointmentsLoading ? (
                   <p className="text-gray-600">Loading...</p>
                 ) : appointmentsError ? (
                   <div className="text-center py-8">
@@ -179,9 +169,7 @@ export default function DashboardPage() {
                   <div className="text-center py-8">
                     <p className="text-gray-600 mb-2">No appointments yet.</p>
                     <p className="text-sm text-gray-500">
-                      {role === "patient" 
-                        ? "Book an appointment using the form on the left."
-                        : "Create an appointment for a patient using the form above."}
+                      Book an appointment using the form on the left.
                     </p>
                   </div>
                 ) : (
