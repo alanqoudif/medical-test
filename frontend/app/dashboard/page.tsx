@@ -46,6 +46,7 @@ export default function DashboardPage() {
 
   const appointments = role === "patient" ? patientAppointments : doctorAppointments;
   const appointmentsLoading = role === "patient" ? patientAppointmentsLoading : doctorAppointmentsLoading;
+  const appointmentsError = role === "patient" ? patientAppointmentsError : doctorAppointmentsError;
 
   useEffect(() => {
     if (!isConnected) {
@@ -154,7 +155,7 @@ export default function DashboardPage() {
               <CardContent>
                 {appointmentsLoading ? (
                   <p className="text-gray-600">Loading...</p>
-                ) : (role === "patient" && patientAppointmentsError) || (role === "doctor" && doctorAppointmentsError) ? (
+                ) : appointmentsError ? (
                   <div className="text-center py-8">
                     <p className="text-red-600 mb-2">Error loading appointments.</p>
                     <p className="text-sm text-gray-500">Please make sure you are registered and try again.</p>
