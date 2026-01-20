@@ -173,13 +173,13 @@ export default function DashboardPage() {
                   <p className="text-gray-600">Loading...</p>
                 ) : appointmentsError ? (
                   <div className="text-center py-8">
-                    <p className="text-yellow-600 mb-2">Unable to load appointments.</p>
+                    <p className="text-gray-600 mb-2">No appointments found.</p>
                     <p className="text-sm text-gray-500 mb-4">
                       {appointmentsError?.message?.includes("Not a registered") || appointmentsError?.message?.includes("Not registered")
-                        ? "You need to complete your registration first. Please register as a patient to view appointments."
-                        : "There was an error loading your appointments. Please try refreshing the page."}
+                        ? "If you just registered, please wait a moment and the appointments will appear automatically."
+                        : "Your appointments will appear here once you book one."}
                     </p>
-                    <div className="flex gap-2 justify-center">
+                    {appointmentsError?.message?.includes("Not a registered") || appointmentsError?.message?.includes("Not registered") ? (
                       <Button 
                         variant="outline" 
                         size="sm"
@@ -191,12 +191,9 @@ export default function DashboardPage() {
                           }
                         }}
                       >
-                        Retry
+                        Refresh
                       </Button>
-                      <Link href="/register">
-                        <Button variant="outline" size="sm">Check Registration</Button>
-                      </Link>
-                    </div>
+                    ) : null}
                   </div>
                 ) : appointments.length === 0 ? (
                   <div className="text-center py-8">
@@ -267,8 +264,33 @@ export default function DashboardPage() {
               <CardContent>
                 {appointmentsLoading ? (
                   <p className="text-gray-600">Loading...</p>
+                ) : appointmentsError ? (
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-2">No appointments found.</p>
+                    <p className="text-sm text-gray-500 mb-4">
+                      {appointmentsError?.message?.includes("Not a registered") || appointmentsError?.message?.includes("Not registered")
+                        ? "If you just registered, please wait a moment and the appointments will appear automatically."
+                        : "Your appointments will appear here once you create one for a patient."}
+                    </p>
+                    {appointmentsError?.message?.includes("Not a registered") || appointmentsError?.message?.includes("Not registered") ? (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          refetchDoctorAppointments();
+                        }}
+                      >
+                        Refresh
+                      </Button>
+                    ) : null}
+                  </div>
                 ) : appointments.length === 0 ? (
-                  <p className="text-gray-600">No appointments yet.</p>
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-2">No appointments yet.</p>
+                    <p className="text-sm text-gray-500">
+                      Create an appointment for a patient using the form above.
+                    </p>
+                  </div>
                 ) : (
                   <div className="space-y-4">
                     {appointments.map((appointment: any) => {
