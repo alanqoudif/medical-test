@@ -194,25 +194,13 @@ export function useGetPatients() {
 
 export function useGetMyAppointmentsAsPatient() {
   const { address, isConnected } = useAccount();
-  
-  // Check if user is a patient first
-  const { data: isPatientData } = useReadContract({
-    address: getContractAddress(),
-    abi: HEALTHCARE_ABI,
-    functionName: "isPatient",
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address && isConnected,
-    },
-  });
-
   const { data, isLoading, error, refetch } = useReadContract({
     address: getContractAddress(),
     abi: HEALTHCARE_ABI,
     functionName: "getMyAppointmentsAsPatient",
     query: {
-      enabled: !!address && isConnected && !!isPatientData,
-      retry: false, // Don't retry on error - likely means user is not registered
+      enabled: !!address && isConnected,
+      retry: 1, // Retry once in case of network issues
     },
   });
 
@@ -242,25 +230,13 @@ export function useGetMyAppointmentsAsPatient() {
 
 export function useGetMyAppointmentsAsDoctor() {
   const { address, isConnected } = useAccount();
-  
-  // Check if user is a doctor first
-  const { data: isDoctorData } = useReadContract({
-    address: getContractAddress(),
-    abi: HEALTHCARE_ABI,
-    functionName: "isDoctor",
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address && isConnected,
-    },
-  });
-
   const { data, isLoading, error, refetch } = useReadContract({
     address: getContractAddress(),
     abi: HEALTHCARE_ABI,
     functionName: "getMyAppointmentsAsDoctor",
     query: {
-      enabled: !!address && isConnected && !!isDoctorData,
-      retry: false, // Don't retry on error - likely means user is not registered
+      enabled: !!address && isConnected,
+      retry: 1, // Retry once in case of network issues
     },
   });
 

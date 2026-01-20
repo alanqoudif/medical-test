@@ -54,6 +54,22 @@ export default function DashboardPage() {
     }
   }, [isConnected, router]);
 
+  // Refetch appointments when role changes (after registration)
+  useEffect(() => {
+    if (role === "patient" && isConnected) {
+      // Small delay to ensure contract state is updated
+      const timer = setTimeout(() => {
+        refetchPatientAppointments();
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else if (role === "doctor" && isConnected) {
+      const timer = setTimeout(() => {
+        refetchDoctorAppointments();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [role, isConnected, refetchPatientAppointments, refetchDoctorAppointments]);
+
   if (!isConnected) {
     return null;
   }
@@ -159,11 +175,28 @@ export default function DashboardPage() {
                   <div className="text-center py-8">
                     <p className="text-yellow-600 mb-2">Unable to load appointments.</p>
                     <p className="text-sm text-gray-500 mb-4">
-                      This might happen if you're not registered yet. Please make sure you've completed registration.
+                      {appointmentsError?.message?.includes("Not a registered") || appointmentsError?.message?.includes("Not registered")
+                        ? "You need to complete your registration first. Please register as a patient to view appointments."
+                        : "There was an error loading your appointments. Please try refreshing the page."}
                     </p>
-                    <Link href="/register">
-                      <Button variant="outline" size="sm">Check Registration</Button>
-                    </Link>
+                    <div className="flex gap-2 justify-center">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          if (role === "patient") {
+                            refetchPatientAppointments();
+                          } else {
+                            refetchDoctorAppointments();
+                          }
+                        }}
+                      >
+                        Retry
+                      </Button>
+                      <Link href="/register">
+                        <Button variant="outline" size="sm">Check Registration</Button>
+                      </Link>
+                    </div>
                   </div>
                 ) : appointments.length === 0 ? (
                   <div className="text-center py-8">
