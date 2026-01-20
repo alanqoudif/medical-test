@@ -34,9 +34,9 @@ export default function DashboardPage() {
   const { role, isLoading: roleLoading } = useRole();
   const router = useRouter();
   const { stats, isLoading: statsLoading } = useGetStats();
-  const { appointments: patientAppointments, isLoading: patientAppointmentsLoading } =
+  const { appointments: patientAppointments, isLoading: patientAppointmentsLoading, error: patientAppointmentsError, refetch: refetchPatientAppointments } =
     useGetMyAppointmentsAsPatient();
-  const { appointments: doctorAppointments, isLoading: doctorAppointmentsLoading, refetch: refetchDoctorAppointments } =
+  const { appointments: doctorAppointments, isLoading: doctorAppointmentsLoading, error: doctorAppointmentsError, refetch: refetchDoctorAppointments } =
     useGetMyAppointmentsAsDoctor();
   const { appointments: allAppointments } = useGetAllAppointments();
   const { doctors } = useGetDoctors();
@@ -142,7 +142,11 @@ export default function DashboardPage() {
         {/* Role-specific content */}
         {role === "patient" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <BookAppointmentForm />
+            <BookAppointmentForm 
+              onAppointmentBooked={() => {
+                refetchPatientAppointments();
+              }}
+            />
             <Card>
               <CardHeader>
                 <CardTitle>My Appointments</CardTitle>
@@ -150,31 +154,57 @@ export default function DashboardPage() {
               <CardContent>
                 {appointmentsLoading ? (
                   <p className="text-gray-600">Loading...</p>
+                ) : (role === "patient" && patientAppointmentsError) || (role === "doctor" && doctorAppointmentsError) ? (
+                  <div className="text-center py-8">
+                    <p className="text-red-600 mb-2">Error loading appointments.</p>
+                    <p className="text-sm text-gray-500">Please make sure you are registered and try again.</p>
+                  </div>
                 ) : appointments.length === 0 ? (
-                  <p className="text-gray-600">No appointments yet.</p>
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-2">No appointments yet.</p>
+                    <p className="text-sm text-gray-500">
+                      {role === "patient" 
+                        ? "Book an appointment using the form on the left."
+                        : "Create an appointment for a patient using the form above."}
+                    </p>
+                  </div>
                 ) : (
                   <div className="space-y-4">
-                    {appointments.slice(0, 5).map((appointment: any) => (
-                      <div
-                        key={appointment.id.toString()}
-                        className="p-4 border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <p className="font-semibold text-gray-900">
-                              Appointment #{appointment.id.toString()}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              {formatDate(appointment.startTime)}
-                            </p>
+                    {appointments.slice(0, 5).map((appointment: any) => {
+                      const doctor = doctors.find((d: any) => d.addr.toLowerCase() === appointment.doctor.toLowerCase());
+                      return (
+                        <div
+                          key={appointment.id.toString()}
+                          className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-900">
+                                Appointment #{appointment.id.toString()}
+                              </p>
+                              {doctor && (
+                                <p className="text-sm text-gray-600">
+                                  Doctor: {doctor.name} - {doctor.specialty}
+                                </p>
+                              )}
+                              <p className="text-sm text-gray-600">
+                                {formatDate(appointment.startTime)}
+                              </p>
+                            </div>
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                              appointment.status === "Booked"
+                                ? "bg-blue-100 text-blue-800"
+                                : appointment.status === "Completed"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}>
+                              {appointment.status}
+                            </span>
                           </div>
-                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                            {appointment.status}
-                          </span>
+                          <p className="text-sm text-gray-700 mt-2">{appointment.reason}</p>
                         </div>
-                        <p className="text-sm text-gray-700">{appointment.reason}</p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </CardContent>

@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import type { Doctor } from "@/types";
 
-export function BookAppointmentForm() {
+interface BookAppointmentFormProps {
+  onAppointmentBooked?: () => void;
+}
+
+export function BookAppointmentForm({ onAppointmentBooked }: BookAppointmentFormProps = {}) {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -20,9 +24,10 @@ export function BookAppointmentForm() {
       // Refetch appointments after successful creation
       setTimeout(() => {
         refetchAppointments();
-      }, 1000);
+        onAppointmentBooked?.();
+      }, 2000); // Increased timeout to ensure transaction is confirmed on chain
     }
-  }, [isConfirmed, refetchAppointments]);
+  }, [isConfirmed, refetchAppointments, onAppointmentBooked]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

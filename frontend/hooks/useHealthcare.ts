@@ -193,13 +193,13 @@ export function useGetPatients() {
 }
 
 export function useGetMyAppointmentsAsPatient() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data, isLoading, error, refetch } = useReadContract({
     address: getContractAddress(),
     abi: HEALTHCARE_ABI,
     functionName: "getMyAppointmentsAsPatient",
     query: {
-      enabled: !!address,
+      enabled: !!address && isConnected,
     },
   });
 
@@ -213,6 +213,11 @@ export function useGetMyAppointmentsAsPatient() {
         };
       }) as Appointment[]
     : [];
+
+  // Log for debugging
+  if (error) {
+    console.error("Error fetching patient appointments:", error);
+  }
 
   return {
     appointments,
@@ -223,13 +228,13 @@ export function useGetMyAppointmentsAsPatient() {
 }
 
 export function useGetMyAppointmentsAsDoctor() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data, isLoading, error, refetch } = useReadContract({
     address: getContractAddress(),
     abi: HEALTHCARE_ABI,
     functionName: "getMyAppointmentsAsDoctor",
     query: {
-      enabled: !!address,
+      enabled: !!address && isConnected,
     },
   });
 
@@ -243,6 +248,11 @@ export function useGetMyAppointmentsAsDoctor() {
         };
       }) as Appointment[]
     : [];
+
+  // Log for debugging
+  if (error) {
+    console.error("Error fetching doctor appointments:", error);
+  }
 
   return {
     appointments,
