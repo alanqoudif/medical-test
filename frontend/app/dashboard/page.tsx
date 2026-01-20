@@ -153,12 +153,27 @@ export default function DashboardPage() {
                 <CardTitle>My Appointments</CardTitle>
               </CardHeader>
               <CardContent>
-                {appointmentsLoading ? (
+                {role === "none" ? (
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-2">You need to register first.</p>
+                    <p className="text-sm text-gray-500 mb-4">
+                      Please register as a patient or doctor to view your appointments.
+                    </p>
+                    <Link href="/register">
+                      <Button variant="outline">Go to Registration</Button>
+                    </Link>
+                  </div>
+                ) : appointmentsLoading ? (
                   <p className="text-gray-600">Loading...</p>
                 ) : appointmentsError ? (
                   <div className="text-center py-8">
-                    <p className="text-red-600 mb-2">Error loading appointments.</p>
-                    <p className="text-sm text-gray-500">Please make sure you are registered and try again.</p>
+                    <p className="text-yellow-600 mb-2">Unable to load appointments.</p>
+                    <p className="text-sm text-gray-500 mb-4">
+                      This might happen if you're not registered yet. Please make sure you've completed registration.
+                    </p>
+                    <Link href="/register">
+                      <Button variant="outline" size="sm">Check Registration</Button>
+                    </Link>
                   </div>
                 ) : appointments.length === 0 ? (
                   <div className="text-center py-8">
